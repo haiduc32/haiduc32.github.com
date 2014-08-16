@@ -1,0 +1,38 @@
+---
+layout: post
+title: Code formatting in WordPress
+date: 2010-11-10 09:40:12.000000000 +02:00
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _wp_old_slug: ''
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>My first concern when i was getting this blog up, was to set up a code formatting plugin. I had another install of  WordPress and there was no default plugin for that. So after typing some keywords in the plugin search came up with the <a href="http://wordpress.org/extend/plugins/syntax-highlighter/">Syntax Highlighter for WordPress</a> which actually uses the <a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter </a>. Searching around i found that Scott Hansleman uses the same plugin, so i decide to settled down with it.</p>
+<p>code sample from Scott Hanselman's <a href="http://www.hanselman.com/blog/BestCodeSyntaxHighlighterForSnippetsInYourBlog.aspx">blog</a>:</p>
+<p>[csharp]<br />
+// Hello3.cs<br />
+using System;</p>
+<p>public class Hello3<br />
+{<br />
+   public static void Main(string[] args)<br />
+   {<br />
+      Console.WriteLine("Hello, World!");<br />
+      Console.WriteLine("You entered the following {0} command line arguments:",<br />
+         args.Length );<br />
+      for (int i=0; i < args.Length; i++)<br />
+      {<br />
+         Console.WriteLine("{0}", args[i]);<br />
+      }<br />
+   }<br />
+}<br />
+[/csharp]</p>

@@ -1,0 +1,50 @@
+---
+layout: post
+title: C# brain teasers
+date: 2011-09-04 17:58:07.000000000 +03:00
+categories: []
+tags:
+- brain teaser
+- c#
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>Recently I've stumbled upon a few brain teasers on C# and it was fun trying to figure out the answers to the problems. So here are a few simple brain teasers from me.</p>
+<h3>Teaser 1</h3>
+<p>What will be displayed in the console?</p>
+<p>[code]<br />
+void foo(int a, int b, int c)<br />
+{<br />
+    Console.WriteLine(a);<br />
+    Console.WriteLine(b);<br />
+    Console.WriteLine(c);<br />
+}</p>
+<p>.....</p>
+<p>int i = 0;</p>
+<p>foo(i++, i++, i++);<br />
+[/code]</p>
+<h3>Teaser 2</h3>
+<p>Will that compile?</p>
+<p>[code]<br />
+enum E { A, B, C, }<br />
+[/code]</p>
+<h3>Teaser 3</h3>
+<p>How about that:</p>
+<p>[code]<br />
+void foo(string s) {...}</p>
+<p>void foo(StringBuilder sb) {...}</p>
+<p>....</p>
+<p>foo(null);<br />
+[/code]</p>
+<p>No answers provided. You want to know the answers, you have to try it yourself, no fun otherwise.</p>
+<p>More teasers <a href="http://www.yoda.arachsys.com/csharp/teasers.html" target="_blank">here</a> and <a href="http://www.ahuwanya.net/blog/post/C-Brainteasers-Part-I.aspx" target="_blank">here</a>. Got a brain teaser? Drop a comment.</p>

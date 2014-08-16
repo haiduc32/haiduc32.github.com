@@ -1,0 +1,23 @@
+---
+layout: post
+title: WebSockets with SignalR (take 2)
+date: 2012-06-23 22:20:38.000000000 +03:00
+categories: []
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>Last week I posted an introductory post on SignalR. The focuse was getting started with it. I used the concept of Hubs from SignalR. Hubs get you started very fast but also have a downside - the messages are encapsulated in an envelope, like:<br />
+[js]<br />
+{&quot;hub&quot;:&quot;chatHub&quot;,&quot;method&quot;:&quot;Message&quot;,&quot;args&quot;:[&quot;my message&quot;],&quot;state&quot;:{},&quot;id&quot;:1}<br />
+[/js]</p>

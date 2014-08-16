@@ -1,0 +1,28 @@
+---
+layout: post
+title: .Net Down Casting
+date: 2012-07-30 10:34:51.000000000 +03:00
+categories: []
+tags: []
+status: private
+type: post
+published: false
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>A necromancer's dream come true, down casting in .Net. Now how awesome is that?</p>
+<p>[csharp]<br />
+SimpleA a = new SimpleA(stringDatat, intData) { Letter = charData };</p>
+<p>//down casting<br />
+SimpleB b = new SimpleB(&quot;s&quot;, 1, decimalData);<br />
+b = b.CopyFrom(a);<br />
+[/csharp]</p>
+<p>The sources are still very raw. Suports just down casting from a class with primitives to a derived class with primitives.</p>
+<p><a href="http://www.blog.cyberkinetx.com/wp-content/uploads/2012/07/DownCasting.zip">DownCasting PoC download</a></p>

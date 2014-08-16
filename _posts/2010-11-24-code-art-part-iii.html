@@ -1,0 +1,37 @@
+---
+layout: post
+title: Code Art part III
+date: 2010-11-24 23:20:13.000000000 +02:00
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _wp_old_slug: ''
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p><strong>Naming convention</strong><br />
+This point covers Naming Convention for C# only. If your native language is some other, you'll have to search on other blogs.. I'm not very familiar with Java, and it's been a while since I worked with PHP, and I hate the C/C++ Naming Convention. Sorry.<br />
+This is one of the most controversial points that I'll be covering in the Code Art series. Most of what I'll be suggesting represents my personal opinion, of course I'll try to motivate it. One of the things I hate in Code Convention documents is that the decisions to use one case or another (for ex.) are not motivated by practical use.<br />
+So here I go.<br />
+When choosing the letters case, the simple rule of thumb would be to use PascalCase for all names except constants, private fields and variables. Constants are usualy typed using all letters upper case and underscore to separate the words: <em>I_AM_CONSTANT</em>. For private fields and variables use lower case camelCase.<br />
+In case your private field name should start with some shortcut likce ICBM, make all letters lower case: <em>icbmMissile</em>. Don't do that if you use PascalCase: <em>ICBMMissile</em>.</p>
+<p>Prefixes<br />
+There are a lot of documents suggesting adding <em>m_ </em>prefix to private fields, for ex: <em>m_variableName</em>. I can't see any reason for doing it. Mistaking a local variable with a private field is kind of hard.. So give up on prefixes to separate the local variables from the "rest of the world", just be a better programmer.<br />
+Never add <em>C</em> prefix to classes. This is so last week..<br />
+The only prefix that you should use is <em>I</em> for interfaces. There is a recommendation to avoid using <em>I</em> as the first letter of any other class but if you need an I why rename your class to something that does not represent it?</p>
+<p>Suffixes<br />
+Never add sufixes to variables that describe the type, like <em>managersInt</em>. The original idea was to make it simpler to developer, to not search for the declaration in order to figure out what type is it. But you have the most modern IDE in front of your eyes. Move the cursor other the variable name and you get a balloon with all the information you need (it's a kind of magic).<br />
+The most common suffixes are Exception and Delegate. But read forward.</p>
+<p>Suggestive names<br />
+All the names you give to your classes, interfaces, variables, methods should be as clear as possible and should describe <strong>what is it</strong>(or what it does).<br />
+For example <em>MessageDispatcherManager</em> class - most probably gets message from somewhere and sends it to the right receivers. <em>GetAllMethods </em>method - probably gets all the messages that are waiting on the queue (what it does). <em>allMessagesList</em> private field - here you may argue that I used List as suffix. Yes and no. List is part of the description because this is what it is, a list of something. I can have also a <em>allMessagesCount </em>field - I did not use int as suffix. I described what is it.<br />
+It's a common convention to end all exceptions with Exception and delegates with Delegate.<br />
+On events it is usual to name them in present or past tense, if the event is fired after an action is performed or before. For ex. <em>Showing</em> - most probably is fired just before a control is rendered (don't take my word that there is such an event). And <em>Showed </em>would like to notify you that the action of showing has just been finished. Also it is usual to name the method that will do the firing of the event with the prefix <em>On</em>: <em>OnShowed</em>, <em>OnShowing</em>.</p>

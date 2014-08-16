@@ -1,0 +1,35 @@
+---
+layout: post
+title: prepare your config for deployment
+date: 2011-10-24 08:47:13.000000000 +03:00
+categories: []
+tags: []
+status: private
+type: post
+published: false
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>[ps]<br />
+function Config-Merge{<br />
+    Param([Parameter(Position=0,Mandatory=$true)][string]$configFile,<br />
+    [Parameter(Position=1,Mandatory=$true)][string]$replaceFile)</p>
+<p>    $f = get-content $replaceFile<br />
+    $expression = &quot;.\XmlConfigMergeConsole.exe `&quot;{0}`&quot;&quot;<br />
+    foreach ($s in $f) {<br />
+        $expression += &quot; -r {0}&quot; -f $s<br />
+    }<br />
+    $expression = $expression -f $configFile<br />
+    write $expression<br />
+    invoke-expression $expression<br />
+    write &quot;Done!&quot;<br />
+}<br />
+[/ps]</p>
+<p><a href="http://www.blog.cyberkinetx.com/wp-content/uploads/2011/10/XmlConfigMergeConsole.exe">XmlConfigMergeConsole</a></p>

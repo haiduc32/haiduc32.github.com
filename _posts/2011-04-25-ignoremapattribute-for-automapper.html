@@ -1,0 +1,25 @@
+---
+layout: post
+title: IgnoreMapAttribute for AutoMapper
+date: 2011-04-25 12:15:45.000000000 +03:00
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>Yet another post about AutoMapper and something new that I contributed to it's source code.</p>
+<p>In my last few posts I <a title="talked about AutoMapper" href="http://www.blog.cyberkinetx.com/2011/02/06/automapper/">talked about AutoMapper</a>, <a title="using AutoMapper for Unit Testing" href="http://www.blog.cyberkinetx.com/2011/03/20/unit-testing-mapping-methods/">using AutoMapper for Unit Testing</a> and even about something that I am working on similar to AutoMapper, and this is a continuation to the series :) At a certain moment in time I felt that I needed some extra automation from AutoMapper and since the source code was open I just added the missing parts.</p>
+<p>So here is the problem: you are using Entity Framework with POCO, you also have DTOs that should be mapped to these entities and then saved to DB. Defining the mapping rules is a bit complicated since you will most probably have all those Navigation Properties that you'll have to ignore. But the complications don't end here, extending the db model you'll probably have more navigation properties generated over time, and will have to update the mapping rules over and over again to update them to the updated entities.</p>
+<p>And here is the solution I came up with: because you are using EF with POCO entities that are generated using the templates, they can be manipulated to generate entities with helper methods, attributes, etc. depending on the type of properties. That's when IgnoreMapAttribute comes in handy. Modifying the template for the POCOs you can add [IgnoreMap] attribute on all navigation properties. Problem solved.</p>
+<p>Well.. there is one more aspect you must consider. Mapping this way to an instantiated entity will fail since you can't assign a value to the properties representing primary keys, so be careful.</p>
+<p>Using [IgnoreMap] attribute comes handy wherever you have fields that should never be mapped to (not from). Like control fields for entities that are set up auto at each save to db.  You just have to add [IgnoreMap] attribute to the property of the object you are mapping to and there is no more need to define the mapping rules for that field when creating the map.</p>
+<p>AutoMapper on CodePlex hasn't been updated for a while now, so you can get the latest source code with support for IgnoreMapAttribute on <a title="github" href="https://github.com/jbogard/AutoMapper/">github</a>.</p>

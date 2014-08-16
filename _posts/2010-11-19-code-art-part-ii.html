@@ -1,0 +1,96 @@
+---
+layout: post
+title: Code Art part II
+date: 2010-11-19 11:46:55.000000000 +02:00
+categories:
+- Code Art
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+  _wp_old_slug: ''
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p><strong>Curly braces</strong><br />
+Curly braces are an important part of our <del datetime="2010-11-19T06:52:40+00:00">life</del> code. Although some languages managed to avoid the usage of brackets, I am a fan. You can have too few curly braces, but never too many.<br />
+Adding the opening curly brace on the same line as the condition or on the next one is usually dictate by some code convention specific to the language you work with. For example Java likes to open the brace on the same line as a condition, C# on the next line. Java guys might argue that C# is wasting precious lines on your monitor, C# guys that Java makes the code less eye-friendly.<br />
+So who likes curly braces? <em>for</em>, <em>do</em>, <em>while</em>, <em>foreach</em> (C#), <em>switch</em>, all love it.<br />
+The rule of thumb would be to encapsulate all the statements in curly braces, no matter if your <em>if</em> or <em>loop</em> has just one statement.<br />
+
+    if (clients > 10)
+    {
+        pages = clients / 10;
+    }
+    //versus:
+    if (clients >; 10)
+        pages = clients / 10;
+	
+Besides the visual part it can also avoid some bugs, like when you want to add a new statement and you put the cursor after the ";", hit enter and type fast the new statement, forgetting to add the braces. Don't smile, it does happen!<br />
+Same with loops. Even if you have one statement encapsulate it into curly braces.<br />
+[csharp]<br />
+for (int i = 0; i &lt; clientListBox.Items.Count; i++)<br />
+{<br />
+    clientListBox.Items[i].Visible = true;<br />
+}<br />
+[/csharp]<br />
+The single exception I agree with is when you have a simple condition and need to set a property (one short line):<br />
+[csharp]<br />
+if (clients &gt; 10) clientsPanel.PagingEnabled = true;<br />
+[/csharp]<br />
+There is one more way to use the braces, to separate the scope of a variable:<br />
+[csharp]<br />
+public void ShowClientPage(int pageNumber)<br />
+{<br />
+    //here is the code for the left column<br />
+    {<br />
+        int items = 0;<br />
+        //some processing goes here<br />
+        leftColumn.Height = items * ITEM_HEIGHT_CONSTANT;<br />
+    }</p>
+<p>    //here is the code for the right column<br />
+    {<br />
+        int items = 0;<br />
+        //some processin goes here<br />
+        RightColumn.Height = items * ITEM_HEIGHT_CONSTANT;<br />
+    }<br />
+}<br />
+[/csharp]<br />
+In this example <em>items</em> is used both for the right and left columns calculations, and is separated into 2 scopes. There is no reason for doing that in this example, it is just for explaining the idea. And the idea is, it's bad practice. If you are thinking about writing that, you most probably have to extract the code into two methods.</p>
+<p><strong>Line spacing</strong><br />
+One more important aspect is the spacing between your lines of code. It helps a lot when the code is separated into small logical blocks, and most of the time a look at the first line of this blocks is enough to give you an idea what this block is and if it is the one you're looking for.<br />
+[csharp]<br />
+public void Foo()<br />
+{<br />
+    int visibleElementsCount = 0;<br />
+    int selectedIndex = 0;<br />
+    foreach (Element element in Elements)<br />
+    {<br />
+        if (element.Age &gt; 0) visibleElementCount++;<br />
+        if (element.IsDefault) selectedIndex<br />
+    }<br />
+    contractsListBox.SelectedIndex = selectedIndex;<br />
+}<br />
+[/csharp]<br />
+Now that is kind of heavy to comprehend with one look. Compare it to:<br />
+[csharp]<br />
+public void Foo()<br />
+{<br />
+    int visibleElementsCount = 0;<br />
+    int selectedIndex = 0;</p>
+<p>    foreach (Element element in Elements)<br />
+    {<br />
+        if (element.Age &gt; 0) visibleElementCount++;<br />
+        if (element.IsDefault) selectedIndex<br />
+    }</p>
+<p>    contractsListBox.SelectedIndex = selectedIndex;<br />
+}<br />
+[/csharp]<br />
+I hope you got my point. Till next post ;)</p>

@@ -1,0 +1,34 @@
+---
+layout: post
+title: Bad organization
+date: 2010-11-12 12:59:16.000000000 +02:00
+categories:
+- Hall of Fame
+tags:
+- bad code
+- fail
+- hall of fame
+status: private
+type: post
+published: false
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+  _wp_old_slug: ''
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>This is another post from the Hall of Fame. It took us 2 hours to figure out why almost simultaneously on 2 computers the visual studio started to give compilation errors of the type:</p>
+<p>[csharp]<br />
+Error	6	The type or namespace name 'Windows' does not exist in the namespace 'BaseNamespace.System' (are you missing an assembly reference?)	D:\SomeBaseDirectory\SomeCodeFile.cs	40	51	BaseNamespace<br />
+[/csharp]</p>
+<p>I do admit, it was also our mistake in a way..<br />
+So the project I was talking about in the <a href="http://www.blog.cyberkinetx.com/2010/11/10/hall-of-fame/">previous post</a> has a System folder in the UI project. We had to add some classes and we figured it was the best place according to the existing organization of the project. There were all kind of utils and managers in that folder already. After adding the new classes and doing some dev, when we tried to compile (first my colleague) there were a few thousand compilation errors with  'Windows' namespace. My colleague tried to restart the computer as it was more like a Visual Studio problem. But.. no luck. Next it happened to me, it was really weird, i tried the same restart, again with no luck.<br />
+It took some patience to read carefully the exception, and some sherlock deduction to figure out that the classes we added have the namespace with System in it and that VS is looking for the Windows inside our namespace.<br />
+Looking over how the other guys (the ones that originally wrote the project) handled the problem I got frustrated. They just stripped down the namespace from their classes.<br />
+So here is a word of advice:</p>
+<blockquote><p>kids, don't use System folders in your solution, or the All Mighty Gods of Computers will punish you by giving thousands of compilation errors.</p></blockquote>

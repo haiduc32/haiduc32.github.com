@@ -1,0 +1,31 @@
+---
+layout: post
+title: NextMap v0.01
+date: 2011-05-09 10:01:00.000000000 +03:00
+categories:
+- Projects
+tags:
+- auto mapping
+- automapper
+- nextmap
+status: publish
+type: post
+published: true
+meta:
+  _networkpub_meta_published: new
+  _edit_last: '1'
+  _networkpub_meta_publish: '1'
+  _networkpub_meta_content: '0'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>I am a speed freak. In everything. Cars, motorcycles, computers.. you name it. Also I love the idea of creating object to object mappings without actually writing code for mapping each field from one object to another. AutoMapper does a pretty good job doing the mappings, but does not satisfy my hunger for speed.</p>
+<p>I covered a very basic usage of AutoMapper in a previous article <a title="AutoMapper" href="http://www.blog.cyberkinetx.com/2011/02/06/automapper/">here</a>. NextMap is built with compatibility with AutoMapper in mind, so all you need to do is just change the referred assembly and the using namespace to NextMap and you are ready to compile and use the new auto mapping engine.</p>
+<p>As for the supported features, it's just version 0.01. There is the very basic set of mappings supported, anything that can be mapped without explicit casting, Lists of Lists of Lists ... of Lists from anything that can be mapped without explicit casting... Mapping arrays of one type to another is not supported yet. But will be in v0.02 or v0.03 the latest. Mapping dictionaries is also planned for the very near future. As for the custom mappings the only supported features are rules for member mappings as Ignore() and MapFrom(). Mapping of different types are not supported: a member of type string to a member of type decimal will not succeed, there will be an exception when calling AssertConfigurationIsValid() with the message that the destination member is not mapped. If the mapping configuration for a member is done explicitly with MapFrom() and the types mapping is not supported there will be an exception.</p>
+<p>The philosophy of NextMap is to provide safe mappings, to try to minimize developer effort and errors.</p>
+<p>Grab an assembly of NextMap today and go change the world! <a title="NextMap v0.01" href="https://github.com/downloads/haiduc32/NextMap/NextMap_v0.01.zip">download from GitHub</a> or check the <a title="NextMap" href="https://github.com/haiduc32/NextMap">NextMap GitHub page</a></p>
+<p><a title="NextMap" href="https://github.com/haiduc32/NextMap"></a>Also here is a version hosted on this domain in case you have domain restrictions <a href="http://www.blog.cyberkinetx.com/wp-content/uploads/2011/05/NextMap_v0.01.zip">NextMap v0.01</a></p>

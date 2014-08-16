@@ -1,0 +1,329 @@
+---
+layout: post
+title: Unit Testing Mapping Methods
+date: 2011-03-20 11:40:38.000000000 +02:00
+categories: []
+tags:
+- automapper
+- unit testing
+- ut
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>When you have a big solution with a lot of DTOs and Entities that map one to another across layers, it creates a risk of fields that are forgotten to be added to one or another, or mapped. Such errors can be very hard to spot by the test team, and they may easily end up in production.</p>
+<p>In my previous article I described the benefits of using AutoMapper, which also include ease of unit testing. But there is a downside to it - Performance!</p>
+<p>When it comes to choosing between performance and ease of unit testing, the choice is usually simple. Even I, in spite of how much I like it, chose to go the old fashion way, and to do the mapping methods manually.</p>
+<p>I've been giving a lot of thought on how to be able to test the mapping methods, when AutoMapper is not used, and the conclusion I came to is.. to use AutoMapper! Don't get too confused, I decided on using the AutoMapper in the unit tests so a parallel automatic mapping is done that will verify the manual mapping.</p>
+<p>But before I could do that, I needed a way to compare two objects that did not have Equals() method overloaded, as I could not count on it to be implemented for the tested entities, or for it to be correctly implemented. The solution was reflection.</p>
+<p>Let's dig into it and see how it all works nicely. First the DTOs:</p>
+<p>[csharp]<br />
+    public class CustomerDto<br />
+    {<br />
+        public AddressDto Address { get; set; }<br />
+        public string Name { get; set; }<br />
+        public DateTime DateOfBirth { get; set; }<br />
+        public int? Accusitions { get; set; }<br />
+    }</p>
+<p>    public class AddressDto<br />
+    {<br />
+        public Country Country { get; set; }<br />
+        public string City { get; set; }<br />
+        public string AddressLine { get; set; }<br />
+        public string ZipCode { get; set; }<br />
+    }</p>
+<p>    public enum CountryDto<br />
+    {<br />
+        USA,<br />
+        UK<br />
+    }<br />
+[/csharp]</p>
+<p>The DTOs are a customer with some properties and with an address. Now for the Domain classes:</p>
+<p>[csharp]<br />
+    public class Customer<br />
+    {<br />
+        public Address Address { get; set; }<br />
+        public string Name { get; set; }<br />
+        public DateTime DateOfBirth { get; set; }<br />
+        public int? Accusitions { get; set; }<br />
+    }</p>
+<p>    public class Address<br />
+    {<br />
+        public Country Country { get; set; }<br />
+        public string City { get; set; }<br />
+        public string AddressLine { get; set; }<br />
+        public string ZipCode { get; set; }<br />
+    }</p>
+<p>    public enum Country<br />
+    {<br />
+        USA,<br />
+        UK<br />
+    }<br />
+[/csharp]</p>
+<p>Now that we have the required DTOs and Domain classes, let's write some mapping methods:</p>
+<p>[csharp]<br />
+    public static class Mapper<br />
+    {<br />
+        public static Customer ToDomain(this CustomerDto dto)<br />
+        {<br />
+            if (dto == null) return null;</p>
+<p>            return new Customer<br />
+            {<br />
+                Accusitions = dto.Accusitions,<br />
+                Address = dto.Address.ToDomain(),<br />
+                DateOfBirth = dto.DateOfBirth,<br />
+                Name = dto.Name<br />
+            };<br />
+        }</p>
+<p>        public static Address ToDomain(this AddressDto dto)<br />
+        {<br />
+            if (dto == null) return null;</p>
+<p>            return new Address<br />
+            {<br />
+                AddressLine = dto.AddressLine,<br />
+                City = dto.City,<br />
+                Country = (Country)dto.Country,<br />
+                ZipCode = dto.ZipCode<br />
+            };<br />
+        }<br />
+    }<br />
+[/csharp]</p>
+<p>The Mapper contains extension method for mapping, this way it's simpler and more intuitive to use them. Implementing the mapping method in the DTO class or in the Domain class is often impossible, and as a general rule bad practice.</p>
+<p>Now that everything that we want to be tested is in place, let's see how a classical UT would look like:</p>
+<p>[csharp]<br />
+        [TestMethod]<br />
+        public void Customer_Mapping_Classic_Test()<br />
+        {<br />
+            //create a DTO object that will be mapped to Domain<br />
+            CustomerDto customerDto = new CustomerDto<br />
+            {<br />
+                Accusitions = 10,<br />
+                DateOfBirth = new DateTime(1980, 3, 3),<br />
+                Name = &quot;Robert Black&quot;,<br />
+                Address = new AddressDto<br />
+                {<br />
+                    Country = CountryDto.UK,<br />
+                    AddressLine = &quot;Some street, 27, ap. 10&quot;,<br />
+                    City = &quot;London&quot;,<br />
+                    ZipCode = &quot;423562&quot;<br />
+                }<br />
+            };</p>
+<p>            //calling the tested method<br />
+            Customer customer = customerDto.ToDomain();</p>
+<p>            //verify the expectations<br />
+            Assert.AreEqual(10, customer.Accusitions);<br />
+            Assert.AreEqual(new DateTime(1980, 3, 3), customer.DateOfBirth);<br />
+            Assert.AreEqual(&quot;Robert Black&quot;, customer.Name);<br />
+            Assert.AreEqual(Country.UK, customer.Address.Country);<br />
+            Assert.AreEqual(&quot;Some street, 27, ap. 10&quot;, customer.Address.AddressLine);<br />
+            Assert.AreEqual(&quot;London&quot;, customer.Address.City);<br />
+            Assert.AreEqual(&quot;423562&quot;, customer.Address.ZipCode);<br />
+        }<br />
+[/csharp]</p>
+<p>As you can see it is straight forward. But what does it really test? Only that the end values are those expected. It won't make any assumptions for new fields that will be added to the DTO or Domain classes unless the programmer remembers to add them to the UT. Another downside is, if you have a big complex object, it takes a lot of lines to write the test, and more than that, it is error prone.</p>
+<p>But I wanted a UT that will test my mappings at all times, and under any circumstances. If a field is added to the Domain class and corresponding field isn't added and mapped to DTO class I want my tests to catch that, and fail until the programmer explicitly ignores that field as being relevant only to the BL Layer.</p>
+<p>Let's see the test and then discuss it:</p>
+<p>[csharp]<br />
+        [TestMethod]<br />
+        public void Customer_Mapping_Test()<br />
+        {<br />
+            AutoMapper.Mapper.CreateMap&lt;CustomerDto, Customer&gt;();<br />
+            AutoMapper.Mapper.CreateMap&lt;Customer, CustomerDto&gt;();<br />
+            AutoMapper.Mapper.CreateMap&lt;AddressDto, Address&gt;();<br />
+            AutoMapper.Mapper.CreateMap&lt;Address, AddressDto&gt;();<br />
+            AutoMapper.Mapper.AssertConfigurationIsValid();</p>
+<p>            //create a DTO object that will be mapped to Domain<br />
+            CustomerDto customerDto = new CustomerDto<br />
+            {<br />
+                Accusitions = 10,<br />
+                DateOfBirth = new DateTime(1980, 3, 3),<br />
+                Name = &quot;Robert Black&quot;,<br />
+                Address = new AddressDto<br />
+                {<br />
+                    Country = CountryDto.UK,<br />
+                    AddressLine = &quot;Some street, 27, ap. 10&quot;,<br />
+                    City = &quot;London&quot;,<br />
+                    ZipCode = &quot;423562&quot;<br />
+                }<br />
+            };</p>
+<p>            Customer manualMapping = customerDto.ToDomain();<br />
+            Customer autoMapping = AutoMapper.Mapper.Map&lt;CustomerDto, Customer&gt;(customerDto);</p>
+<p>            bool testResult = ReflectionComparer.Equal(manualMapping, autoMapping);<br />
+            Assert.IsTrue(testResult);<br />
+        }<br />
+[/csharp]</p>
+<p>So what is different? First of all, there is the AutoMapper involved. The 2 way mapping has been defined on the lines 4 to 7, and then the mappings have been validated on line 8. If the mappings won't be 1 to 1 the AssertConfigurationIsValid will throw an Exception. In my <a href="http://www.blog.cyberkinetx.com/2011/02/06/automapper/">previous article</a> I've described how to use this mappings. You can set rules to ignore fields, or to map one field to another with a different name, but for that you should read the referred link from the previous article.</p>
+<p>The DTO object initialization is the same as in the classical test. We create a Customer object using our mapping method ToDomain(). Next the magic starts, anothe Customer object is created using the automatic mapping. The mapping is done using rules set up on lines 4-7. In our test we supposed the mapping is one to one so no rules were necessary.</p>
+<p>The last, and most important part is the ReflectionComparer.Equal() method. Using reflection it compares the two objects to have same values. Here is the code:</p>
+<p>[csharp]<br />
+public class ReflectionComparer<br />
+{<br />
+    /// &lt;summary&gt;<br />
+    /// Compares two objects by reflection and decides if they are equal as value or not.<br />
+    /// &lt;/summary&gt;<br />
+    /// &lt;param name=&quot;source&quot;&gt;The source object to compare.&lt;/param&gt;<br />
+    /// &lt;param name=&quot;target&quot;&gt;The target object to be compared against.&lt;/param&gt;<br />
+    /// &lt;returns&gt;true if the objects are same as value, false otherwise.&lt;/returns&gt;<br />
+    public static bool Equal(object source, object target)<br />
+    {<br />
+        //check for null and null combinations<br />
+        if (source == null &amp;&amp; target == null) return true;<br />
+        if (source == null || target == null) return false;</p>
+<p>        //after this point source and target are sure to be instantiated</p>
+<p>        Type sourceType = source.GetType();<br />
+        Type targetType = target.GetType();<br />
+        if (!sourceType.Equals(targetType)) return false;</p>
+<p>        //get all the properties and compare them<br />
+        PropertyInfo[] properties = sourceType<br />
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance);<br />
+        foreach (PropertyInfo propertyInfo in properties)<br />
+        {<br />
+            //skip setter only properties<br />
+            if (!propertyInfo.CanRead) continue;</p>
+<p>            //check if it is a index parameter and skip if so<br />
+            if (propertyInfo.GetIndexParameters().Count() != 0) continue;</p>
+<p>            //read the values of the properties for source and target<br />
+            Object sourceValue = propertyInfo.GetValue(source, null);<br />
+            Object targetValue = propertyInfo.GetValue(target, null);</p>
+<p>            //first check for nulls<br />
+            //if both nulls skip to the next property<br />
+            if (sourceValue == null &amp;&amp; targetValue == null) continue;<br />
+            //if one is null and the other is not then the objects<br />
+            //are not same as value<br />
+            if (sourceValue == null || targetValue == null) return false;</p>
+<p>            if (propertyInfo.PropertyType.IsPrimitive ||<br />
+                propertyInfo.PropertyType.IsEnum ||<br />
+                propertyInfo.PropertyType == typeof(string))<br />
+            {<br />
+                //all primitive types, enums and strings can be<br />
+                //safely compared using Equals()<br />
+                if (!sourceValue.Equals(targetValue)) return false;<br />
+            }<br />
+            else if (propertyInfo.PropertyType.IsValueType)<br />
+            {<br />
+                //unless you use structs it's safe to suppose it's a standard type<br />
+                //and can be compared with Equals()<br />
+                if (!sourceValue.Equals(targetValue)) return false;<br />
+            }<br />
+            else if (sourceValue is System.Collections.IEnumerable)<br />
+            {<br />
+                //special treatment is required, unless it is used<br />
+                //no need to support it<br />
+                throw new NotImplementedException();<br />
+            }<br />
+            else<br />
+            {<br />
+                //finally we can do recursive comparison<br />
+                if (!Equal(sourceValue, targetValue)) return false;<br />
+            }<br />
+        }</p>
+<p>        //if we got here it's safe to assume the values are same<br />
+        return true;<br />
+    }<br />
+}<br />
+[/csharp]</p>
+<p>I wrote this method to suit my needs, and must warn you, it is not ready to compare any classes. The limitations of which I am aware of (can't guarantee it's bug free): can't compare properties that are List, Dictionary and so on. For that I added the condition for IEnumerable and an exception throwin NotImplementedException(), so in case there happens to be such an case no strange results will be returned. Feel free to implement it if you need it in your code, and don't forget to drop me a message with the solution :) The other limitation, all Structures must have the Equals() method overridden. Actually that's more of a good practice than a limitation.</p>
+<p>As a side note, this Equal() method can be used for unit testing the overridden Equals() methods.</p>
+<p>At this point all the insights of the UT are explained, but not much as general. This unit test will check that the DTO and Domain classes are same as structure, and that the mapping method maps all properties. Whenever a new set of  properties will be added to both classes, and the mapping will be updated for them, the unit test will be already validating that. If the programmer adds the properties but forgets to update the mapping, the test will fail. If the programmer adds a property only in one class, the test will fail. If the Properties are named differently in the DTO and Domain the test will fail. For the last two, special conditions might apply, and the programmer might not want all properties from Domain being mapped to the DTO. And naming of the properties can be different as desired by some conditions.</p>
+<p>Because I defined mapping method only from DTO to Domain, I'm going to add a new field to the CustomerDTO that I do not want to be mapped into the Domain object, check that the test fails, and then update the test to explicitly ignore this new field. </p>
+<p>[csharp]<br />
+    public class CustomerDto<br />
+    {<br />
+        public AddressDto Address { get; set; }<br />
+        public string Name { get; set; }<br />
+        public DateTime DateOfBirth { get; set; }<br />
+        public int? Accusitions { get; set; }<br />
+        public string SessionCode { get; set; }<br />
+    }<br />
+[/csharp]</p>
+<p>The new field is SessionCode. If I rerun the test, the test will fail with the exception:</p>
+<blockquote><p>Test method MappingTests.UnitTest.Customer_Mapping_Test threw exception:<br />
+AutoMapper.AutoMapperConfigurationException: The following 1 properties on MappingTests.CustomerDto are not mapped:<br />
+	SessionCode<br />
+Add a custom mapping expression, ignore, or rename the property on MappingTests.Customer.</p></blockquote>
+<p>Now to update the test:</p>
+<p>[csharp]<br />
+        [TestMethod]<br />
+        public void Customer_Mapping_Test()<br />
+        {<br />
+            AutoMapper.Mapper.CreateMap&lt;CustomerDto, Customer&gt;();<br />
+            AutoMapper.Mapper.CreateMap&lt;Customer, CustomerDto&gt;()<br />
+                .ForMember(x =&gt; x.SessionCode, y =&gt; y.Ignore());<br />
+            AutoMapper.Mapper.CreateMap&lt;AddressDto, Address&gt;();<br />
+            AutoMapper.Mapper.CreateMap&lt;Address, AddressDto&gt;();<br />
+            AutoMapper.Mapper.AssertConfigurationIsValid();</p>
+<p>            //create a DTO object that will be mapped to Domain<br />
+            CustomerDto customerDto = new CustomerDto<br />
+            {<br />
+                Accusitions = 10,<br />
+                DateOfBirth = new DateTime(1980, 3, 3),<br />
+                Name = &quot;Robert Black&quot;,<br />
+                Address = new AddressDto<br />
+                {<br />
+                    Country = CountryDto.UK,<br />
+                    AddressLine = &quot;Some street, 27, ap. 10&quot;,<br />
+                    City = &quot;London&quot;,<br />
+                    ZipCode = &quot;423562&quot;<br />
+                }<br />
+            };</p>
+<p>            Customer manualMapping = customerDto.ToDomain();<br />
+            Customer autoMapping = AutoMapper.Mapper.Map&lt;CustomerDto, Customer&gt;(customerDto);</p>
+<p>            bool testResult = ReflectionComparer.Equal(manualMapping, autoMapping);<br />
+            Assert.IsTrue(testResult);<br />
+        }<br />
+[/csharp]</p>
+<p>The added line is <em>.ForMember(x => x.SessionCode, y => y.Ignore());</em>. That tells AutoMapper to ignore this field when mapping from a Domain object to a DTO, but our mapping is the other way arround?.. Well, wehave to validate AutoMapper rules both ways to spot new properties on DTO or Domain classes.</p>
+<p>Next special case is when the names are different. I'll rename the Country property from the Address Domain class to HomeCountry:</p>
+<p>[csharp]<br />
+    public class Address<br />
+    {<br />
+        public Country HomeCountry { get; set; }<br />
+        public string City { get; set; }<br />
+        public string AddressLine { get; set; }<br />
+        public string ZipCode { get; set; }<br />
+    }<br />
+[/csharp]</p>
+<p>If I run the UTs now, I will get one UT failed, the one with AutoMapper. Unfortunately this can't be simplified in any way, so I'll have to go and update the mapping rules for AUtoMapper:</p>
+<p>[csharp]<br />
+        [TestMethod]<br />
+        public void Customer_Mapping_Test()<br />
+        {<br />
+            AutoMapper.Mapper.CreateMap&lt;CustomerDto, Customer&gt;();<br />
+            AutoMapper.Mapper.CreateMap&lt;Customer, CustomerDto&gt;()<br />
+                .ForMember(x =&gt; x.SessionCode, y =&gt; y.Ignore());<br />
+            AutoMapper.Mapper.CreateMap&lt;AddressDto, Address&gt;()<br />
+                .ForMember(x =&gt; x.HomeCountry, y =&gt; y.MapFrom(z =&gt; z.Country));<br />
+            AutoMapper.Mapper.CreateMap&lt;Address, AddressDto&gt;()<br />
+                .ForMember(x =&gt; x.Country, y =&gt; y.MapFrom(z =&gt; z.HomeCountry));<br />
+            AutoMapper.Mapper.AssertConfigurationIsValid();</p>
+<p>            //create a DTO object that will be mapped to Domain<br />
+            CustomerDto customerDto = new CustomerDto<br />
+            {<br />
+                Accusitions = 10,<br />
+                DateOfBirth = new DateTime(1980, 3, 3),<br />
+                Name = &quot;Robert Black&quot;,<br />
+                Address = new AddressDto<br />
+                {<br />
+                    Country = CountryDto.UK,<br />
+                    AddressLine = &quot;Some street, 27, ap. 10&quot;,<br />
+                    City = &quot;London&quot;,<br />
+                    ZipCode = &quot;423562&quot;<br />
+                }<br />
+            };</p>
+<p>            Customer manualMapping = customerDto.ToDomain();<br />
+            Customer autoMapping = AutoMapper.Mapper.Map&lt;CustomerDto, Customer&gt;(customerDto);</p>
+<p>            bool testResult = ReflectionComparer.Equal(manualMapping, autoMapping);<br />
+            Assert.IsTrue(testResult);<br />
+        }<br />
+[/csharp]</p>
+<p>Horray, the tests are green! Now I used ForMember() method again, but instead of Ignore(), I mapped the fields using MapFrom(). More complex rules for mapping can be defined, but this are not part of this article.</p>
+<p>To conclude it all, unit test careful your mapping methods, and you might end up doing a lot less debugging in the long run.</p>

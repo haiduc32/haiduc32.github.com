@@ -1,0 +1,33 @@
+---
+layout: post
+title: Hall of Fame
+date: 2010-11-10 15:09:18.000000000 +02:00
+categories:
+- Hall of Fame
+tags:
+- bad code
+- fail
+- hall of fame
+status: private
+type: post
+published: false
+meta:
+  _edit_last: '1'
+  _wp_old_slug: ''
+  _syntaxhighlighter_encoded: '1'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>This is the first article from a series (at least I hope so) of articles dedicated to bad coding.<br />
+Currently, at my day-job we are refactoring a WPF project to MVVM. Important to inform you that project was not developed in our company! There are a lot of "weird stuff" going on in the code. I'll try to cover a few things that look funny or really weird.</p>
+<p>Here is the C# 3.5 snippet. Consider value as IEnumerable.<br />
+[csharp]<br />
+// Set the contact person's value(s) if allowed.<br />
+if (value.ToList() == ContactRole.AvailableContacts) return;<br />
+[/csharp]<br />
+The intention is clear, the guy wanted to compare 2 lists but.. failed.</p>
+<p>More to come.</p>

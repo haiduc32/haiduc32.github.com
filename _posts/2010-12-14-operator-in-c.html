@@ -1,0 +1,53 @@
+---
+layout: post
+title: ?? operator in C#
+date: 2010-12-14 11:51:24.000000000 +02:00
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+  _wp_old_slug: ''
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>Everybody knows the ternary operator <strong>?</strong>. It can be found in most languages like C/C++, Java, C#, PHP and JS. But how many C# developers know about the binary operator <strong>??</strong> ? Apparently not so many.<br />
+<strong>??</strong> is a great little thing introduced along with null-able types in .NET 2.0. It's meant to eliminate some ifs in your code when working with types that can be null. Unfortunately it is not so widely used.<br />
+Let's check an example:<br />
+[csharp]<br />
+int GetTeamPoints(User user)<br />
+{<br />
+    int? teamPoints;</p>
+<p>    using (DBDataContext db = new DBDataContext())<br />
+    {<br />
+        teamPoints = db.Users.Where(x =&gt; x.Team == user.Team)<br />
+            .Sum(x =&gt; x.Points);<br />
+    }</p>
+<p>    if (teamPoints == null)<br />
+        teamPoints = 0;</p>
+<p>    return teamPoints.Value;<br />
+}<br />
+[/csharp]<br />
+The code works ok, but how about the next example:<br />
+[csharp]<br />
+int GetTeamPoints(User user)<br />
+{<br />
+    int? teamPoints;</p>
+<p>    using (DBDataContext db = new DBDataContext())<br />
+    {<br />
+        teamPoints = db.Users.Where(x =&gt; x.Team == user.Team)<br />
+            .Sum(x =&gt; x.Points);<br />
+    }</p>
+<p>    return teamPoints ?? 0;<br />
+}<br />
+[/csharp]<br />
+Ah, now it looks so much cleaner. And it's faster by a few processor cycles.<br />
+Although <strong>??</strong> has been introduced especially for working with nullable types, it can work with reference types as well, returning a value when the object is null.</p>
+<p>You may want to check the MSDN reference: <a href="http://msdn.microsoft.com/en-us/library/ms173224(v=VS.100).aspx">?? Operator (C# Reference)</a></p>

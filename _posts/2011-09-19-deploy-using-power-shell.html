@@ -1,0 +1,22 @@
+---
+layout: post
+title: deploy using power shell
+date: 2011-09-19 07:11:35.000000000 +03:00
+categories: []
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>$source = 'source'<br />
+$dest = 'destination'<br />
+$exclude = @('a.txt')<br />
+Get-ChildItem $source -Recurse -Exclude $exclude | Copy-Item -Destination {Join-Path $dest $_.FullName.Substring($source.length)}</p>

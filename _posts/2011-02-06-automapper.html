@@ -1,0 +1,115 @@
+---
+layout: post
+title: AutoMapper
+date: 2011-02-06 15:46:36.000000000 +02:00
+categories: []
+tags:
+- automapper
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+author:
+  login: admin
+  email: haiduc32@gmail.com
+  display_name: Radu
+  first_name: ''
+  last_name: ''
+---
+<p>It’s been a long time since I haven’t posted anything technical, but here is the weekend, and I finally have time to write another article on my laptop. I started writing about AutoMapper 2 months ago, but figured the PoC I was going to demo was faulty so I gave up. Till now. I think I got it right this time, and I hurry to share with you my latest thoughts.</p>
+<p>I’ll go with a short description of the tool, just to give you a heads up what AutoMapper is all about. Suppose you are working in an n-layered solution where you have Model entities and DTO entities (Data Transfer Object). The Model entities are the classes that are loaded from the DB, and used in the Business Logic Layer. The DTO entities are used for communication with the outside world, say web service contracts. Naturaly you’ll be writing mapping code for creating DTO objects from Model objects, and Model from DTO. Supposedly a lot of the DTO entities have the same fields as Model entities, with some exceptions. You can use AutoMapper to map the data between the Model and DTO entities in just a few lines compared to manual mapping:<br />
+[csharp]<br />
+    public class Model<br />
+    {<br />
+      public string Name { get; set; }<br />
+      public string Surname { get; set; }<br />
+      public int Age { get; set; }<br />
+    }</p>
+<p>    public class DTO<br />
+    {<br />
+      public string Name { get; set; }<br />
+      public string Surname { get; set; }<br />
+    }</p>
+<p>..</p>
+<p>    //create the source object:<br />
+    Model model = new Model<br />
+    {<br />
+      Name = &quot;John&quot;,<br />
+      Surname = &quot;Black&quot;,<br />
+      Age = 35<br />
+    };</p>
+<p>    //manual mapping:<br />
+    DTO dto = new DTO<br />
+    {<br />
+      Name = model.Name,<br />
+      Surname = model.Surname<br />
+    };</p>
+<p>    //mapping using AutoMapper:<br />
+    //this two lines can be set up in a static constructor,<br />
+    //or in an Init block<br />
+    Mapper.CreateMap&lt;Model, DTO&gt;();<br />
+    Mapper.AssertConfigurationIsValid();</p>
+<p>    //mapping from Model object to DTO<br />
+    DTO dto = Mapper.Map&lt;Model, DTO&gt;(model);</p>
+<p>[/csharp]<br />
+You can read about basic usage in more details in this <a href="http://jasona.wordpress.com/2010/02/05/getting-started-with-automapper/">blog </a></p>
+<p>Why this is good? Because you won’t have to worry about adding mappings manually each time you add new fields. We are all humans, we sometimes forget that we must also update some mapping class in some forgotten project.</p>
+<p>But there is still chance for mistakes. If you create the target field but forget to create the source field, you will end with default value for that target field.</p>
+<p>Don’t worry, with a correct usage of AutoMapper you can create 2 way mappings that can be verified easily with unit tests, or at least spotted immediately when you run the application on your dev machine.</p>
+<p>Now using the previous Model and DTO classes let’s do a two way mapping and validate it with AssertConfigurationIsValid():<br />
+[csharp]<br />
+    //mapping using AutoMapper:<br />
+    Mapper.CreateMap&lt;Model, DTO&gt;();<br />
+    Mapper.CreateMap&lt;DTO, Model&gt;();<br />
+    Mapper.AssertConfigurationIsValid();</p>
+<p>...</p>
+<p>    Model model = Mapper.Map&lt;DTO, Model&gt;(dto);</p>
+<p>[/csharp]<br />
+An exception will be thrown when validating the configuration. When mapping from DTO to Model, there is the Age property that AutoMapper does not know where to map from. Ups.. Is this a mistake? Did I forget to add the Age field to the DTO class? If it’s not a mistake I will have to specify an ignore rule on this field, and when mapping from DTO to Model the property will be set to the default value, 0 in this case.<br />
+[csharp]<br />
+    //mapping using AutoMapper:<br />
+    Mapper.CreateMap&lt;Model, DTO&gt;();<br />
+    Mapper.CreateMap&lt;DTO, Model&gt;()<br />
+        .ForMember(x=&gt;x.Age, y=&gt;y.Ignore());<br />
+    Mapper.AssertConfigurationIsValid();</p>
+<p>...</p>
+<p>    Model model = Mapper.Map&lt;DTO, Model&gt;(dto);</p>
+<p>[/csharp]<br />
+Now we have a two way mapping set up with validation. If to the DTO class a new property is added, but not to the Model class a runtime exception will be thrown when validating the configuration. As long as properties with same name and convertible types (AutoMapper can also convert automatically from one type to another) are added to both classes validation will run successfully, and you’ll have automatic mapping hassle free.</p>
+<p>Right, but there is one more thing to cover. Where do you write the map configuration code, and how to use the mapping code in a more elegant way? </p>
+<p>Starting with C# 3.0 Microsoft gave us Extension methods, which is a great thing I must say. Using extension methods, we can create a class that is used for mapping methods, that way we can call methods on DTO and Model classes like if it was part of them, but keep the code in a separate place, in such a way that DTO and Model mustn’t know about the existence of each other. Isn’t that confusing?</p>
+<p>But this article is not about creating n-layer applications, and how to decouple the layers but about using AutoMapper, so I’ll skip to the code first and discuss it after you have a sneak peek:<br />
+[csharp]<br />
+    public static class MappingExtensions<br />
+    {<br />
+        static MappingExtensions()<br />
+        {<br />
+            Mapper.CreateMap&lt;Model, DTO&gt;();<br />
+            Mapper.CreateMap&lt;DTO, Model&gt;()<br />
+                .ForMember(x =&gt; x.Age, y =&gt; y.Ignore());<br />
+            Mapper.AssertConfigurationIsValid();<br />
+        }</p>
+<p>        public static Model ToModel(this DTO dto)<br />
+        {<br />
+            return Mapper.Map&lt;DTO, Model&gt;(dto);<br />
+        }</p>
+<p>        public static DTO ToDTO(this Model model)<br />
+        {<br />
+            return Mapper.Map&lt;Model, DTO&gt;(model);<br />
+        }<br />
+    }</p>
+<p>...</p>
+<p>    //create the source object:<br />
+    Model model = new Model<br />
+    {<br />
+        Name = &quot;John&quot;,<br />
+        Surname = &quot;Black&quot;,<br />
+        Age = 35<br />
+    };</p>
+<p>    //map to DTO<br />
+    DTO dto = model.ToDTO();<br />
+[/csharp]<br />
+So now we have a MappingExtensions class with extension methods. We have to add a using to it’s namespace and we can call ToModel() and ToDTO() method on the Model and DTO classes. The mapping configuration is done in the static constructor. The only drawback of this method is that if the validations is unsuccessful you get a “The type initializer for 'Mapping.MappingExtensions' threw an exception.” Exception which is a bit confusing, and the AutoMapper exception is wrapped in the inner exception, so you must always investigate the inner exceptions (and I don’t mean only when working with AutoMapper).</p>
+<p>Now you know not only how to make automatic mappings that are being validated at runtime, but also how to make it elegantly. There is one more thing you must know, it has a price to pay. You can’t use AutoMapper for high performance applications. There is a big penalty for all the under the hood operations that AutoMapper does. But its usage is more then motivated when you are dealing with moderate quantities of data to be transferred or when you have to build a stable system.</p>
