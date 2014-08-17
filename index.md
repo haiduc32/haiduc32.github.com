@@ -1,6 +1,5 @@
 ---
 layout: page
-title: Welcome
 ---
 {% include JB/setup %}
 
@@ -9,6 +8,23 @@ I've migrated my blog from blog.cyberkinetx.com to this new place. Unfortunately
 I'm still struggling with this new thingie (Jekyll and github.io). Looks like it's the new fashion to build blogs on github and since I'm tired of hosting Wordpress on my home pc, and solving domain problems with IP resets, I decided to give it a go.
 
 Lots of work to be done to get this place to look like a.. blog. 
+
+<div class="blog-index">  
+  {% assign post = site.posts.first %}
+  {% assign content = post.content %}
+    <h1 class="entry-title">
+    {% if page.title %}
+        <a href="{{ root_url }}{{ page.url }}">Latest: {{ page.title }}</a>
+    {% endif %}
+    {% if post.title %}
+
+        <a href="{{ root_url }}{{ post.url }}">Latest: {{ post.title }}</a>
+    {% endif %}
+    </h1>
+    <div class="entry-content">{{ content }}</div>
+    {% include JB/comments %}
+</div>
+
 
     
 ## Blog Archive
