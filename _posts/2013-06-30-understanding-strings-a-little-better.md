@@ -29,7 +29,7 @@ Take a moment to think what you'd expect to get printed on screen, and why.
 Now let's check another example:
 
 	string a = "ab";
-	string b = "a&";
+	string b = "a";
 	b += "b";
 	bool referenceEquals = object.ReferenceEquals(a, b);
 	Console.WriteLine(referenceEquals);
