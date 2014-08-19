@@ -49,6 +49,9 @@ Right, so you're intersted.. If you're not fammiliar with the Azure Service Bus 
 
 Here is an example of putting a message on the Service Bus Queue. Note: it depends on the Json.NET package (just NuGet it). Most of the code should be self-explanatory.
 
+{% gist haiduc32/40d90bd1ec013b41950f %}
+
+
     public void Send(object payload, DateTime? scheduleUTC = null)
     {
         string connectionString = CloudConfigurationManager.GetSetting("ServiceBus");
