@@ -37,15 +37,16 @@ What I want to be able to do:
 
 You can do all that with a classic scheduler model, interrogating the database/website every second, building a lot of synchronization stuff, and preying. But I'd rather use a simple and elegant solution that Azure Service Bus can provide.
 
-Here is a simple diagram that shows all the parts of the solution: the users, the website, the Azure Service Bus Queue and the back-end service.
+Here is a simple diagram that shows all the parts of the solution: the users, the website, the Azure Service Bus Queue and the back-end service. (By the way, I recommend using [Draw.io](http://draw.io) for creating simple diagrams fast.)
+
 ![Azure Service Bus Job Scheduling]({{ site.url }}/assets/AzureJobScheduling.png)
 
 You can have on back-end service or more, or you can integrate it into your website if you have the option of keeping your website always on. This solution leaves this option up to you.
 
-All you need to do is go into Azure, create a Queue in a new Service Bus or in an existing Service Bus, add the code to put messages on the Queue and the code to read them. How to create the Azure Service Bus Queue is explained pretty good here: http://azure.microsoft.com/en-us/documentation/articles/service-bus-dotnet-how-to-use-queues/
+All you need to do is go into Azure, create a Queue in a new Service Bus or in an existing Service Bus, add the code to put messages on the Queue and the code to read them. How to create the Azure Service Bus Queue is explained pretty good [here](http://azure.microsoft.com/en-us/documentation/articles/service-bus-dotnet-how-to-use-queues/ "How to Use Service Bus Queues").
 
 ### Stop talking, show me the code!
-Right, so you're interested.. If you're not familiar with the Azure Service Bus Queues you should start by ready some documentation and samples before trying to understand the code examples. A good place to start is here: http://azure.microsoft.com/en-us/documentation/articles/service-bus-dotnet-how-to-use-queues/
+Right, so you're interested.. If you're not familiar with the Azure Service Bus Queues you should start by ready some documentation and samples before trying to understand the code examples. As mentioned earlier, a good place to start is [here](http://azure.microsoft.com/en-us/documentation/articles/service-bus-dotnet-how-to-use-queues/ "How to Use Service Bus Queues").
 
 Here is an example of putting a message on the Service Bus Queue. Note: it depends on the Json.NET package (just NuGet it). Most of the code should be self-explanatory.
 
