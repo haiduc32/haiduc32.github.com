@@ -27,27 +27,31 @@ author:
 <p>I mentioned that it was a lazy Sunday afternoon, right? So don't expect very much from the code, it was written in a moment of inspiration and is not fully functional (the cancellation event isn't implemented, so reuse the code at you're own risk). Just a PoC.</p>
 <p>You can download the sources for the demonstration form. Feel the difference between the "Preemptive Button" and "Simple Button" where both have a Thread.Sleep(1000), but the user experience is different (also depends on how fast you handle your mouse).</p>
 <p>To explain the idea, for the preemptive button the action is split between "heavy processing" and "result processing". The simple button does everything in a single action. The "heavy processing" is processed in the background when the PreemtiveEvents senses that the user might have the intention of clicking the button. Once the intention is confirmed, it will wait for the heavy processing to finish and then call the result processing passing it the output value from the previous action. Simple.</p>
-<p>[csharp]<br />
-	public partial class PreemptiveTestForm : Form<br />
-	{<br />
-		private DateTime start;</p>
-<p>		public PreemptiveTestForm()<br />
-		{<br />
-			InitializeComponent();<br />
-			PreemptiveEvents preemptiveEvents = new PreemptiveEvents();<br />
-			preemptiveEvents.RegisterAction(btnPreemptive,<br />
-				() =&gt; { Thread.Sleep(1000); return 1; }, //heavy processing<br />
-				x =&gt; { MessageBox.Show(&quot;The output is &quot; + x); }); //result processing<br />
-		}</p>
-<p>		private void btnSimple_Click(object sender, EventArgs e)<br />
-		{<br />
-			Thread.Sleep(1000);<br />
-			MessageBox.Show(&quot;The output is 2&quot;);<br />
-		}<br />
-	}<br />
-[/csharp]</p>
-<p>Long running processes will probably not benefit from this technique, but for processes with up to 2-3 sec execution time, the difference is obvious.</p>
-<p>To make a stronger point on the Preemtive UI, let's continue on the photos idea. For example you are making a photo viewer program, and one of the most common actions are the rotate buttons (after the next of course). Rotation may take a second, even more depending on the image size and quality. How about implementing preemptive events for that? The user will get a fast result and will be happy that you're program is so much faster than the windows photo viewer (well actually any photo viewer is faster than the windows one..)</p>
-<p>I didn't google for any similar techniques, I did it just for fun and I did enjoy doing it. Not sure if it's worth adding as a project to github, the solutions might be so different for different applications and I don't see a point of trying to make a general one.</p>
-<p>Did your imagination go crazy? Leave a comment.</p>
-<p><a href="http://www.blog.cyberkinetx.com/wp-content/uploads/2011/05/PreemptiveTestApplication.zip">Preemptive Test Application source.</a></p>
+
+	public partial class PreemptiveTestForm : Form
+	{
+		private DateTime start;
+    
+		public PreemptiveTestForm()
+		{
+			InitializeComponent();
+			PreemptiveEvents preemptiveEvents = new PreemptiveEvents();
+			preemptiveEvents.RegisterAction(btnPreemptive,
+				() => { Thread.Sleep(1000); return 1; }, //heavy processing
+				x => { MessageBox.Show("The output is "" + x); }); //result processing
+		}
+    
+		private void btnSimple_Click(object sender, EventArgs e)
+		{
+			Thread.Sleep(1000);
+			MessageBox.Show("The output is 2");
+		}
+	}
+
+Long running processes will probably not benefit from this technique, but for processes with up to 2-3 sec execution time, the difference is obvious.
+
+To make a stronger point on the Preemtive UI, let's continue on the photos idea. For example you are making a photo viewer program, and one of the most common actions are the rotate buttons (after the next of course). Rotation may take a second, even more depending on the image size and quality. How about implementing preemptive events for that? The user will get a fast result and will be happy that you're program is so much faster than the windows photo viewer (well actually any photo viewer is faster than the windows one..)
+
+I didn't google for any similar techniques, I did it just for fun and I did enjoy doing it. Not sure if it's worth adding as a project to github, the solutions might be so different for different applications and I don't see a point of trying to make a general one.
+
+Did your imagination go crazy? Leave a comment.
