@@ -20,6 +20,7 @@ Lots of work to be done to get this place to look like a.. blog.
 
         <a href="{{ root_url }}{{ post.url }}">Latest: {{ post.title }}</a>
     {% endif %}
+    {{ root_url }}
     </h1>
     
     <div class="content">{{ content }}</div>
