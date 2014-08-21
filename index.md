@@ -27,7 +27,10 @@ Lots of work to be done to get this place to look like a.. blog.
 
       <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53f4eb4678c482ba"></script>
 
-      <div class="addthis_sharing_toolbox" data-url="{{ HOME_PATH }}{{ post.url }}" data-title="{{ post.title }}"></div>
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+        <div class="addthis_native_toolbox" data-url="{{ HOME_PATH }}{{ post.url }}" data-title="{{ post.title }}"></div>
+
+      <!--<div class="addthis_sharing_toolbox" data-url="{{ HOME_PATH }}{{ post.url }}" data-title="{{ post.title }}"></div>-->
     </div>
     {% include JB/comments %}
 
