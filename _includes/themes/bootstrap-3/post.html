@@ -10,22 +10,13 @@
     <div class="content">
       {{ content }}
     </div>
+  
+    <div class="post-sharing">
 
-  {% unless page.categories == empty %}
-    <ul class="tag_box inline">
-      <li><i class="glyphicon-open"></i></li>
-      {% assign categories_list = page.categories %}
-      {% include JB/categories_list %}
-    </ul>
-  {% endunless %}  
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53f4eb4678c482ba"></script>
 
-  {% unless page.tags == empty %}
-    <ul class="tag_box inline">
-      <li><i class="glyphicon-tags"></i></li>
-      {% assign tags_list = page.tags %}
-      {% include JB/tags_list %}
-    </ul>
-  {% endunless %}  
+      <div class="addthis_sharing_toolbox" data-title="{{ page.title }}"></div>
+    </div>
   
     <hr>
     <ul class="pagination">
