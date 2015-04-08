@@ -15,7 +15,7 @@ author:
   email: haiduc32@gmail.com
   display_name: Radu
   first_name: ''
-  last_name: ''
+  last_name: ''  
 ---
 We (me and a couple of colleagues) have been building a service that required scheduled jobs. Our initial approach was pretty straight forward: add a scheduled job and ping our website every 10 minutes to check for any jobs for that window.
 
