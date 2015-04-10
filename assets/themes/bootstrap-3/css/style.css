@@ -21,7 +21,10 @@ h1, h2, h3, h4 {
   background-color: #fdcd60;
 }
 
-
+body {
+  font-family: 'Segoe UI', 'Segoe WP', Arial, sans-serif;
+  font-size: 16px;
+}
 
 /* posts index */
 .post > h3.title {
