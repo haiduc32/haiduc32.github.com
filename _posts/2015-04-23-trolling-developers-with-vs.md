@@ -14,7 +14,7 @@ author:
   first_name: ''
   last_name: ''  
 ---
-You may or may not be aware that Visual Studio will try to compile your projects concurrently, to a certain degree. It's an old feature, and you can actually set the number of parallel project builds How to: Set the Number of Concurrent Builds for Multiprocessor Builds https://msdn.microsoft.com/en-us/library/y0xettzf%28v=vs.90%29.aspx.
+You may or may not be aware that Visual Studio will try to compile your projects concurrently, to a certain degree. It's an old feature, and you can actually set the number of parallel project builds [How to: Set the Number of Concurrent Builds for Multiprocessor Builds](https://msdn.microsoft.com/en-us/library/y0xettzf%28v=vs.90%29.aspx).
 
 But how this relates to trolling you ask? Well.. in the most dirrect way, though it's not that obvious.
 
