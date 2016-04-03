@@ -48,4 +48,6 @@ In order to receive messages you have to subscribe to the proper topic. Find the
 
 Now you should be in the position to witness the magic of IoT Hubs, connecting your devices to the cloud. 
 
+**Afterthoughts** Security! Security! Security! If you want to do more than just blink some leds, you probably should think about setting the TLS properly. The sketch has no certificate validation, so anyone can impersonate the Azure IoT Hub and intercept all the traffic, or issue messages to your device. So that's one. Second, SAS token is best to be constructed inside your sketch, then asking your service (whatever api you're building) for a newer token every x (put a measure of time in here). Yes, that's not that easy, and you'll need to get the time, hash the string and Base64 it (there are arduino libraries out there).
+
 Drop a comment, a question or share it with the world ;)
