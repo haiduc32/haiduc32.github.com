@@ -7,6 +7,7 @@ tags: [esp8266, arduino, azure iot hub]
 status: publish
 type: post
 published: true
+post_id: esp8266-arduino-iot-hub
 author:
   login: admin
   email: haiduc32@gmail.com
