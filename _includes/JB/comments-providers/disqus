@@ -2,8 +2,8 @@
 <script type="text/javascript">
     {% if site.safe == false %}var disqus_developer = 1;{% endif %}
     var disqus_shortname = '{{ site.JB.comments.disqus.short_name }}'; // required: replace example with your forum shortname
-    {% if page.post_id %}var disqus_identifier = '{{page.post_id}}';{% endif %}
-    {% if post.post_id %}var disqus_identifier = '{{post.post_id}}';{% endif %}
+    {% if page.post_id %}var this.page.identifier = '{{page.post_id}}';{% endif %}
+    {% if post.post_id %}var this.page.identifier = '{{post.post_id}}';{% endif %}
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
