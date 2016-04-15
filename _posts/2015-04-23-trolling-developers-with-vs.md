@@ -7,6 +7,7 @@ tags: []
 status: publish
 type: post
 published: true
+post_id: trolling-developers-with-vs
 author:
   login: admin
   email: haiduc32@gmail.com

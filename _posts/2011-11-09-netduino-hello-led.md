@@ -10,6 +10,7 @@ tags:
 status: publish
 type: post
 published: true
+post_id: netduino-hello-led
 meta:
   _edit_last: '1'
   _syntaxhighlighter_encoded: '1'

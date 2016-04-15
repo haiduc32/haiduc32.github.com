@@ -13,6 +13,7 @@ tags:
 status: publish
 type: post
 published: true
+post_id: entity-framework-and-enums-aka-efextensions
 meta:
   _edit_last: '1'
   _syntaxhighlighter_encoded: '1'

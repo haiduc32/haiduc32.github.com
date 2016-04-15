@@ -9,6 +9,7 @@ tags:
 status: publish
 type: post
 published: true
+post_id: ioc-and-circular-reference
 meta:
   _edit_last: '1'
   _syntaxhighlighter_encoded: '1'

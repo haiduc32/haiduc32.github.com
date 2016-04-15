@@ -7,6 +7,7 @@ tags: []
 status: publish
 type: post
 published: true
+post_id: rounding-money
 meta:
   _edit_last: '1'
   _syntaxhighlighter_encoded: '1'

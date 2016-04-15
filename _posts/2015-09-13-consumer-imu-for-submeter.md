@@ -7,6 +7,7 @@ tags: []
 status: draft
 type: post
 published: false
+post_id: consumer_imu-for-submeter
 author:
   login: admin
   email: haiduc32@gmail.com

@@ -7,6 +7,7 @@ tags: []
 status: publish
 type: post
 published: true
+post_id: signalr-the-power-of-websocket-at-your-fingertips
 meta:
   _edit_last: '1'
   _syntaxhighlighter_encoded: '1'

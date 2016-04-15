@@ -7,6 +7,7 @@ tags: [Azure, Service Bus]
 status: publish
 type: post
 published: true
+post_id: centralising-logs
 author:
   login: admin
   email: haiduc32@gmail.com
