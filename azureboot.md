@@ -22,7 +22,7 @@ author:
 - Visual Studio 2013 or 2015
 - Azure SDK
 
-Also download the [Azure Service Bus Explorer](https://code.msdn.microsoft.com/windowsapps/Service-Bus-Explorer-f2abca5a) and extract it to a handy folder.
+Also download the [Azure Service Bus Explorer](https://code.msdn.microsoft.com/windowsapps/Service-Bus-Explorer-f2abca5a) and extract it into a handy folder.
 
 Next: keep focused on the hands-on.
 
@@ -30,6 +30,7 @@ Next: keep focused on the hands-on.
 
 We'll create a service bus, and a topic from the Azure Portal. Then we'll configure the Topic with specific permissions for writing and reading. Lastly, we'll add subscriptions to the Topic, using Azure Service Bus Explorer.
 
+(Hands on only!)
 
 ### Check-point 2
 
@@ -39,4 +40,26 @@ In this part we're going to create a very simple sender and receiver.
 2. Add the nuget packages to each project:
   - Microsoft.WindowsAzure.ConfigurationManager
   - WindowsAzure.ServiceBus
-3. 
+3. Update the configs. The config for the sender shuld have the Microsoft.ServiceBus.ConnectionString key set to the Topic config. The config for receiver should be set to Subscription.
+4. Your Sender code should be similar to:
+{% gist haiduc32/cab6f20a344fc205fa85cab85aa7cee6 AzureSBSender.cs %}
+5. Your Receiver code should be similar to:
+{% gist haiduc32/cab6f20a344fc205fa85cab85aa7cee6 AzureSBReceiver.cs %}
+
+### Check-point 3
+
+In this part we're going to enhance our sender and receiver code.
+
+1. Your Sender code should be similar to:
+{% gist haiduc32/84f3357b070af1886c2edf1d3b820e17 AzureSBSender.cs %}
+2. Your Receiver code should be similar to:
+{% gist haiduc32/84f3357b070af1886c2edf1d3b820e17 AzureSBSender.cs %}
+
+### Bonus points
+
+If we have time we'll explore more SB Topic/Subscription topics. (hands on only!)
+
+### Further reading
+
+(TODO)
+
