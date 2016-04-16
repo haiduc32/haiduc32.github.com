@@ -26,10 +26,6 @@ Also download the [Azure Service Bus Explorer](https://code.msdn.microsoft.com/w
 
 Next: keep focused on the hands-on.
 
-### If you don't have an Azure account..
-
-For today's session I've created a trial account that you can use by opening [portal.azure.com](http://portal.azure.com) and logging in with the user: clujboot@gmail.com and password: BootAzure. 
-
 ### Check-point 1
 
 We'll create a service bus, and a topic from the Azure Portal. Then we'll configure the Topic with specific permissions for writing and reading. Lastly, we'll add subscriptions to the Topic, using Azure Service Bus Explorer.
