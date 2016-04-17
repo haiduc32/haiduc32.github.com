@@ -26,9 +26,9 @@ Before you get to reading this article, you must have a working example in C#, n
 
 I will presume you have enough knowledge of Arduino and ESP8266 and will jump to the important parts.
 
-First, you need a library to connect to the IoT hub. For small devices your (kind of) only option is to use the MQTT protocol. The [PubSubClient][] library comes in handy. There are forks with newer version, and you can try them out but I recommend you first try working with this one as it is proven to be working with the Azure IoT Hub.
+First, you need a library to connect to the IoT hub. For small devices your (kind of) only option is to use the MQTT protocol. The [PubSubClient][https://github.com/knolleary/pubsubclient] library comes in handy. There are forks with newer version, and you can try them out but I recommend you first try working with this one as it is proven to be working with the Azure IoT Hub.
 
-You can get started by going to the examples folder, and picking the ESP8266 one. Note that you must copy the PubSubClieent source files in the same folder as your ino, or in a library folder.
+You can get started by going to the examples folder, and picking the mqtt_esp8266 one. Note that you must copy the PubSubClieent source files in the same folder as your ino, or in a library folder.
 
 Now let's get to "fixing" the PubSubClient library.. because the Azure IoT Hub password is so long, you must go into the .h file, find the line `#define MQTT_MAX_PACKET_SIZE 128` and put a bigger number, like 256. 256 worked for me. If you need big messages you probably need to put a bigger number, but that would mean you're probably doing something wrong.
 
@@ -37,6 +37,8 @@ Time to start editing the ino file.
 Find the line with `const char* mqtt_server = "broker.mqtt-dashboard.com";` and set the address to something like `<myhubname>.azure-devices.net` where `<myhubname>` is the name you gave to your IoT Hub when you created it from Azure dashboard.
 
 Find the line with `WiFiClient espClient;` and replace the type with WifiClientSecure. You need this because Azure IoT Hub is using TLS. You might need to add `#include <WiFiClientSecure.h>` in order to compile. (the provided sample doesn't have an include for WiFiClient, but I found that you need it).
+
+The Azure IoT Hub MQTT runs on port 8883 so we nee to find the line `client.setServer(mqtt_server, 1883);` and change the port from 1883 to 8883 (thanks to  Quentin for pointing it out).
 
 Next, on the line with `if (client.connect("ESP8266Client")) {` we need connect with authentication, so that'll be `if (client.connect(<deviceid>, <hubuser>, <hubpass>)) {`. Now to explaining what exactly you need to pass:
 
