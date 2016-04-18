@@ -36,7 +36,7 @@ Time to start editing the ino file.
 
 Find the line with `const char* mqtt_server = "broker.mqtt-dashboard.com";` and set the address to something like `<myhubname>.azure-devices.net` where `<myhubname>` is the name you gave to your IoT Hub when you created it from Azure dashboard.
 
-Find the line with `WiFiClient espClient;` and replace the type with WifiClientSecure. You need this because Azure IoT Hub is using TLS. You might need to add `#include <WiFiClientSecure.h>` in order to compile. (the provided sample doesn't have an include for WiFiClient, but I found that you need it).
+Find the line with `WiFiClient espClient;` and replace the type with WiFiClientSecure. You need this because Azure IoT Hub is using TLS. You might need to add `#include <WiFiClientSecure.h>` in order to compile. (the provided sample doesn't have an include for WiFiClient, but I found that you need it).
 
 The Azure IoT Hub MQTT runs on port 8883 so we nee to find the line `client.setServer(mqtt_server, 1883);` and change the port from 1883 to 8883 (thanks to  Quentin for pointing it out).
 
