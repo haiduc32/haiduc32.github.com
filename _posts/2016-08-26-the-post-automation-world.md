@@ -6,7 +6,7 @@ categories: []
 tags: [thoughts]
 status: publish
 type: post
-published: true
+published: false
 post_id: the-post-automation-world
 author:
   login: admin
