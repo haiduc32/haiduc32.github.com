@@ -1,12 +1,12 @@
 ---
 layout: post
 title: The Post Automation World
-date: 2016-08-23
+date: 2016-09-18
 categories: []
 tags: [thoughts]
 status: publish
 type: post
-published: false
+published: true
 post_id: the-post-automation-world
 author:
   login: admin
