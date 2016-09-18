@@ -7,7 +7,7 @@ tags: [thoughts]
 status: publish
 type: post
 published: true
-post_id: the-post-automation-world
+post_id: the-post-automation-world2
 author:
   login: admin
   email: haiduc32@gmail.com
