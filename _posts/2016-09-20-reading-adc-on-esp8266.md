@@ -6,7 +6,7 @@ categories: []
 tags: [esp8266, Arduino]
 status: publish
 type: post
-published: false
+published: true
 post_id: reading-adc-on-esp8266
 author:
   login: admin
